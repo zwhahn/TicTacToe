@@ -3,6 +3,19 @@ const boardOperation = (function () {
                 [null,null,null],
                 [null,null,null]];
 
+    const boardContainer = document.querySelector(".board-container");
+
+    
+    const boardLayout = document.createElement("div");
+    boardLayout.classList.add("board-layout");
+    boardContainer.appendChild(boardLayout);
+    
+    for (let i = 0; i <= 9; i++) {
+        const square = document.createElement("div");
+        square.classList.add("square");
+        boardLayout.appendChild(square);
+    }
+
     const updateBoard = function (row,col, mark){
         board[row][col] = mark;
         return board;
@@ -45,13 +58,24 @@ function createPlayer(name, mark) {
 }
 
 function gamePlay() {
+
+    turn = 0;
+
     const takeTurn = function (row, col, player) {
+        (turn%2) == 0 ? player = player1 : player = player2;
+
+        // Advance turns
+        turn = turn++
+
         // Check that play location is on board
         if (row > 2 | col > 2){
             return 'Outside of board'
         }
         boardOperation.updateBoard(row, col, player.mark);
-        return boardOperation.checkForWinner();
+        winner = boardOperation.checkForWinner();
+        if (winner) {
+            return winner
+        }
     }
 
     return { takeTurn };
