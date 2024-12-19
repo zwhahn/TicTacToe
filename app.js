@@ -1,11 +1,10 @@
-const boardOperation = (function () {
+function Gameboard() {
     let board = [[null,null,null],
                 [null,null,null],
                 [null,null,null]];
 
     const boardContainer = document.querySelector(".board-container");
 
-    
     const boardLayout = document.createElement("div");
     boardLayout.classList.add("board-layout");
     boardContainer.appendChild(boardLayout);
@@ -15,15 +14,20 @@ const boardOperation = (function () {
         square.classList.add("square");
         boardLayout.appendChild(square);
     }
+    
+    const addMark = function (row,col, mark){
+        // Check that play location is on board
+        if (row > 2 | col > 2){
+            return 'Outside of board'
+        }
 
-    const updateBoard = function (row,col, mark){
         board[row][col] = mark;
         return board;
     }
 
     const getBoard = function () {
         return board;
-    }    
+    }
 
     const checkForWinner = function () {
         // Check rows and columns
@@ -50,51 +54,63 @@ const boardOperation = (function () {
         return false;
     }
 
-    return { updateBoard, getBoard, checkForWinner }
-})();
+    return { addMark, getBoard, checkForWinner }
+};
+
+function square(){
+    let mark = 0;
+
+    const addMark = function(player) {
+        mark = player;
+    }
+
+    const getMark = function() {
+        return mark;
+    }
+
+    return { addMark, getMark };
+}
 
 function createPlayer(name, mark) {
     return {name, mark};
 }
 
-function gamePlay() {
+function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
 
-    turn = 0;
+    const board = Gameboard();
 
-    const takeTurn = function (row, col, player) {
-        (turn%2) == 0 ? player = player1 : player = player2;
-
-        // Advance turns
-        turn = turn++
-
-        // Check that play location is on board
-        if (row > 2 | col > 2){
-            return 'Outside of board'
+    players = [
+        {
+            name: playerOneName,
+            token: 1
+        },
+        {
+            name: playerTwoName,
+            token: 2
         }
-        boardOperation.updateBoard(row, col, player.mark);
-        winner = boardOperation.checkForWinner();
-        if (winner) {
-            return winner
-        }
+    ];
+
+    let activePlayer = players[0];
+    
+    const changeActivePlayerTurn = () => activePlayer = activePlayer === players[0] ? players[1] : players[0];
+
+    const getActivePlayer = () => activePlayer;
+
+    const takeTurn = function (row, col) {
+        
+        console.log("current turn: " + getActivePlayer().name);
+
+        board.addMark(row, col, getActivePlayer().token)
+
+        board.checkForWinner();
+
+        changeActivePlayerTurn();
     }
 
-    return { takeTurn };
+
+
+    return { takeTurn, changeActivePlayerTurn };
 };
 
-// console.log(boardOperation.updateBoard(0,0,'x'));
-// console.log(boardOperation.updateBoard(1,0,'x'));
-// console.log(newGame(2,0,'x'));
-// console.log(newGame(0,2,'x'));
-
-player1 = createPlayer('player1', 'x');
-player2 = createPlayer('player2', 'o');
-console.log(createPlayer(player1));
-console.log(createPlayer(player2));
-
-game = gamePlay();
-
-console.log(game.takeTurn(0,0, player2));
-console.log(game.takeTurn(1,0, player2));
-console.log(game.takeTurn(2,0, player2));
-console.log(boardOperation.getBoard())
+const game = gamePlay()
 
