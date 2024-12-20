@@ -66,8 +66,8 @@ function Gameboard() {
         const col = i % cols;
 
         square.addEventListener("click", () => {
-            console.log(`row: ${row}`)
-            console.log(`col: ${col}`)
+            game.takeTurn(row, col);
+            square.textContent = `${game.getActivePlayer().mark}`
         });
     }
     // -------------------------------------
