@@ -1,10 +1,37 @@
 * {
     margin: 0px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.page-container {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 2fr 9fr 1fr;
+}
+
+.header {
+    background-color: #7ca982;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 3em;
+    letter-spacing: 0.2em;
 }
 
 .board-container {
     height: 5em;
     width: 5em;
+    background-color: yellowgreen;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f6d4ba;
 }
 
 .board-layout {
