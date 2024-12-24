@@ -28,17 +28,27 @@ h1 {
     grid-template-columns: 2fr 8fr 2fr;
 }
 
-.center-column-container {
+.center-column-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-column: 2/3;
+    /* justify-content: center;
+    align-items: center; */
+    /* flex-direction: column; */
+}
+
+.board-container-flex {
     display: flex;
+    grid-row: 2/3;
     justify-content: center;
     align-items: center;
-    grid-column: 2 / 3;
 }
 
 .board-container {
     height: 200px;
     width: 200px;
     position: relative;
+    grid-row: 2/3;
 }
 
 .horizontal-lines, .vertical-lines {
@@ -106,4 +116,18 @@ h1 {
 
 .square:hover {
     background-color: brown;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-row: 3/4;
+}
+
+.reset {
+    /* align-self: flex-end; */
+    width: 80px;
+    height: 60px;
+
 }

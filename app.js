@@ -9,6 +9,26 @@ function Gameboard() {
             board[i].push(null);
     }
 
+    const reset = function () {
+        // Reset UI board
+        const squares = document.querySelectorAll('.square');
+
+        for (let i = 0; i < squares.length; i++) {
+            const square = squares[i];
+            square.textContent = '';
+        }
+
+        //Reset board array
+        for (i=0; i < rows; i++) {
+            for (j=0; j<cols; j++)
+                board[i][j] = null;
+        }
+
+        console.log('Reset');
+        return;
+
+    }
+
     
     const addMark = function (row,col, mark){
         // Check that play location is on board
@@ -74,7 +94,7 @@ function Gameboard() {
     }
     // -------------------------------------
 
-    return { addMark, getBoard, checkForWinner }
+    return { addMark, getBoard, checkForWinner, reset }
 };
 
 // function cell(){
@@ -145,10 +165,19 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
         
         changeActivePlayerTurn();
     }
+
+    const resetBoard = function () {
+        board.reset();
+        return;
+    }
     
     
     
-    return { takeTurn, getActivePlayer, legalTurn };
+    return { takeTurn, getActivePlayer, legalTurn, resetBoard };
 };
 
+
 const game = gamePlay()
+
+resetButton = document.querySelector('.reset');
+resetButton.addEventListener('click', () => game.resetBoard())
