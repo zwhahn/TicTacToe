@@ -34,6 +34,20 @@ h1 {
     background-color: #f6d4ba;
 }
 
+.footer a {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    gap: 5px;
+    color: #000;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.footer img {
+    height: 1.3em;
+}
+
 .board-layout {
     background-color: red;
     width: 100%;
