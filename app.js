@@ -66,8 +66,10 @@ function Gameboard() {
         const col = i % cols;
 
         square.addEventListener("click", () => {
-            game.takeTurn(row, col);
-            square.textContent = `${game.getActivePlayer().mark}`
+            turn = game.takeTurn(row, col);
+            if (turn != false){
+                square.textContent = `${game.getActivePlayer().mark}`
+            }
         });
     }
     // -------------------------------------
@@ -114,15 +116,19 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
     
     const getActivePlayer = () => activePlayer;
     
+    // Ensure two players can't go in the same spot
+    const legalTurn = function(row, col) {
+        return (board.getBoard()[row][col] == null);
+    }
+    
     const takeTurn = function (row, col) {
         
         console.log("current turn: " + getActivePlayer().name);
         
-        // Ensure two players can't go in the same spot
-        if (board.getBoard()[row][col] != null){
+        if (!game.legalTurn(row,col)) {
             console.log(board.getBoard())
             console.log("Spot Taken!")
-            return
+            return false
         }
         
         board.addMark(row, col, getActivePlayer().mark)
@@ -142,7 +148,7 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
     
     
     
-    return { takeTurn, getActivePlayer };
+    return { takeTurn, getActivePlayer, legalTurn };
 };
 
 const game = gamePlay()
