@@ -24,6 +24,7 @@ function Gameboard() {
                 board[i][j] = null;
         }
 
+
         console.log('Reset');
         return;
 
@@ -86,10 +87,8 @@ function Gameboard() {
         const col = i % cols;
 
         square.addEventListener("click", () => {
+            square.textContent = `${game.getActivePlayer().mark}`;
             turn = game.takeTurn(row, col);
-            if (turn != false){
-                square.textContent = `${game.getActivePlayer().mark}`
-            }
         });
     }
     // -------------------------------------
@@ -118,6 +117,7 @@ function Gameboard() {
 function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
     
     const board = Gameboard();
+
     
     players = [
         {
@@ -129,12 +129,13 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
             mark: 'o'
         }
     ];
-
+    
     let activePlayer = players[0];
     
     const changeActivePlayerTurn = () => activePlayer = activePlayer === players[0] ? players[1] : players[0];
     
     const getActivePlayer = () => activePlayer;
+    console.log(`${getActivePlayer().mark}`)
     
     // Ensure two players can't go in the same spot
     const legalTurn = function(row, col) {
@@ -143,7 +144,7 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
     
     const takeTurn = function (row, col) {
         
-        console.log("current turn: " + getActivePlayer().name);
+        console.log("current turn: " + getActivePlayer().mark);
         
         if (!game.legalTurn(row,col)) {
             console.log(board.getBoard())
@@ -151,15 +152,32 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
             return false
         }
         
-        board.addMark(row, col, getActivePlayer().mark)
+        board.addMark(row, col, getActivePlayer().mark);
+        console.log(`Add mark: ${getActivePlayer().mark}`);
         
         console.log(board.getBoard());
         
         // Check for winner
-        winner = board.checkForWinner();
+        let winner = board.checkForWinner();
         console.log(winner)
+        
+        if (winner){
+            let centerCol = document.querySelector('.center-column-grid');
+
+            // Capatilize for display banner
+            winner = winner.toUpperCase();
+            
+            winnerBanner = document.createElement("div");
+            winnerBanner.classList.add('winner-banner');
+            winnerBanner.textContent = `Winner: ${winner}`;
+            centerCol.appendChild(winnerBanner);
+        }
+
+
+
         if (winner == getActivePlayer().mark) {
             console.log("winner is:" + getActivePlayer().name);
+
             
         }
         
@@ -168,6 +186,9 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
 
     const resetBoard = function () {
         board.reset();
+        activePlayer = players[0];
+        let centerCol = document.querySelector('.center-column-grid');
+        centerCol.removeChild(winnerBanner);
         return;
     }
     
@@ -180,4 +201,4 @@ function gamePlay(playerOneName = "Player One", playerTwoName = "Player Two") {
 const game = gamePlay()
 
 resetButton = document.querySelector('.reset');
-resetButton.addEventListener('click', () => game.resetBoard())
+resetButton.addEventListener('click', () => game.resetBoard());

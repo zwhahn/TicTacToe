@@ -125,6 +125,13 @@ h1 {
     grid-row: 3/4;
 }
 
+.winner-banner {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    font-size: 2.5em;
+}
+
 .reset {
     /* align-self: flex-end; */
     width: 80px;
